@@ -2,7 +2,7 @@ package model;
 
 import java.util.Scanner;
 
-public abstract class Personagem {
+public abstract class Personagem implements Acao{
     Scanner leia = new Scanner(System.in);
 
     private String nome;

@@ -30,6 +30,19 @@ public class Menu {
                 personagem.alterarNome();
                 personagem.exibirFicha();
                 break;
+            case 2:
+                personagem = new Combatente("Combatente", 15, 15, 4);
+                personagem.alterarNome();
+                personagem.exibirFicha();
+                break;
+            case 3:
+                personagem = new Especialista("Especialista", 18, 18, 3);
+                personagem.alterarNome();
+                personagem.exibirFicha();
+                break;
+            default:
+                System.out.println("Opção inválida");
+                break;
         }
 
         tipoDeInimigo();
@@ -60,3 +73,4 @@ public class Menu {
         System.out.println("Ocultista: Mais vida e menos força");
     }
 }
+

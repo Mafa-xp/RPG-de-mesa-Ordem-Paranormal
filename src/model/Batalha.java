@@ -35,8 +35,10 @@ public class Batalha {
     }
 
     private void turnoJogador() {
-        System.out.println("\n---- VEZ DO JOGADOR ----");
-        System.out.println("Sua vida: " + player.getVida() + "/" + player.getVidaMax());
+        System.out.println("\n==========================================");
+        System.out.println("          TURNO DO JOGADOR          ");
+        System.out.println("==========================================");
+        System.out.println(" Vida Atual: [" + player.getVida() + "/" + player.getVidaMax() + "]");
         System.out.println("O que quer fazer?");
         System.out.println("1 - Atacar");
         System.out.println("2 - Defender");
@@ -53,17 +55,21 @@ public class Batalha {
         int opcao = leia.nextInt();
         switch (opcao) {
             case 1:
-                executarAtaqueNormalPlayer();
+                try {
+                    player.ataque(); // Funciona para QUALQUER personagem!
+                    if (player.isSucessoNoDado()) {
+                        inimigo.receberDano(player.getResultadoAtaque());
+                        player.setResultadoAtaque(0);
+                    }
+                } catch (PersonagemMortoExeption e) {
+                    System.out.println(e.getMessage());
+                }
                 break;
             case 2:
-                if (player instanceof Ocultista) {
-                    ((Ocultista) player).defesa();
-                }
+                player.defesa();
                 break;
             case 3:
-                if (player instanceof Ocultista) {
-                    ((Ocultista) player).cura();
-                }
+                player.cura();
                 break;
             case 4:
                 if (contagemEspecialPlayer == 0) {
@@ -80,19 +86,6 @@ public class Batalha {
         }
     }
 
-    private void executarAtaqueNormalPlayer() {
-        if (player instanceof Ocultista) {
-            try {
-                ((Ocultista) player).ataque();
-                if (player.isSucessoNoDado()) {
-                    aplicarDanoNoInimigo(player.getResultadoAtaque());
-                    player.setResultadoAtaque(0);
-                }
-            } catch (PersonagemMortoExeption e) {
-                System.out.println(e.getMessage());
-            }
-        }
-    }
 
     private void executarAtaqueEspecialPlayer() {
         System.out.println("----VOCÊ USOU SEU ATAQUE ESPECIAL!----");
@@ -112,7 +105,9 @@ public class Batalha {
     }
 
     private void turnoInimigo() {
-        System.out.println("\n---- VEZ DO INIMIGO ----");
+        System.out.println("\n==========================================");
+        System.out.println("          TURNO DO INIMIGO           ");
+        System.out.println("==========================================");
         System.out.println("Vida inimigo: " + inimigo.getVidaInimigo() + "/" + inimigo.getVidaMaxInimigo());
 
         // Se o Especial do inimigo estiver pronto, ele usa com prioridade
@@ -128,7 +123,7 @@ public class Batalha {
                 player.setResultadoDefesa(0);
             }
             player.receberDano(danoSuper);
-            contagemEspecialInimigo = 3; // Recarga de 3 turnos para o inimigo
+            contagemEspecialInimigo = 5; // Recarga de 5 turnos para o inimigo
             return;
         }
 

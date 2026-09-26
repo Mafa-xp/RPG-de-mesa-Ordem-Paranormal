@@ -3,11 +3,11 @@ package model;
 import exception.PersonagemMortoExeption;
 import java.util.Objects;
 
-public class Ocultista extends Personagem{
+public class Combatente extends Personagem implements Acao {
     Dado dado20 = new Dado(20);
     Dado dado6 = new Dado(6);
 
-    public Ocultista(String tipoPersonagem, Integer vida, Integer vidaMax, Integer forca) {
+    public Combatente(String tipoPersonagem, Integer vida, Integer vidaMax, Integer forca) {
         super(tipoPersonagem, vida, vidaMax, forca);
     }
 
@@ -20,15 +20,16 @@ public class Ocultista extends Personagem{
         System.out.println("Rolando 1D20..");
         dado20.rolar();
         if (dado20.getResultado() >= 15) {
-            System.out.println("Boa você tirou " + dado20.getResultado());
+            System.out.println("Boa! Você tirou " + dado20.getResultado());
             System.out.println("Rolando 1D6..");
             dado6.rolar();
-            System.out.println("Você da um Dano no inimigo: " + dado6.getResultado() + " + " + getForca() + " de força");
-            setResultadoAtaque(dado6.getResultado() + getForca());
+            int danoTotal = dado6.getResultado() + getForca();
+            System.out.println("Ataque do Combatente! Dano causado: " + dado6.getResultado() + " + " + getForca() + " de força = " + danoTotal);
+            setResultadoAtaque(danoTotal);
             setSucessoNoDado(true);
         } else {
-            System.out.println("Puts, você tirou " + dado20.getResultado() + " sua ação não deu certo.");
-            setSucessoNoDado(true);
+            System.out.println("Puts, você tirou " + dado20.getResultado() + ". Seu ataque falhou!");
+            setSucessoNoDado(false);
         }
     }
 
@@ -36,18 +37,16 @@ public class Ocultista extends Personagem{
     public void cura() {
         setSucessoNoDado(false);
         if (Objects.equals(getVida(), getVidaMax())) {
-            System.out.println("Você não pode se curar, sua vida já está no maximo.");
+            System.out.println("Você não pode se curar, sua vida já está no máximo.");
         } else {
             System.out.println("Rolando 1D20..");
             dado20.rolar();
             if (dado20.getResultado() >= 15) {
-                System.out.println("Boa você tirou " + dado20.getResultado());
+                System.out.println("Boa! Você tirou " + dado20.getResultado());
                 System.out.println("Rolando 1D6..");
                 dado6.rolar();
 
                 Integer recuperacao = getVida() + dado6.getResultado();
-
-                // Lógica com if/else para travar na vida máxima
                 if (recuperacao > getVidaMax()) {
                     setVida(getVidaMax());
                 } else {
@@ -57,7 +56,7 @@ public class Ocultista extends Personagem{
                 System.out.println("Você se curou! Vida atual: " + getVida() + "/" + getVidaMax());
                 setSucessoNoDado(true);
             } else {
-                System.out.println("Puts, você tirou " + dado20.getResultado() + " sua ação não deu certo.");
+                System.out.println("Puts, você tirou " + dado20.getResultado() + ". A cura falhou.");
                 setSucessoNoDado(false);
             }
         }
@@ -69,14 +68,14 @@ public class Ocultista extends Personagem{
         System.out.println("Rolando 1D20..");
         dado20.rolar();
         if (dado20.getResultado() >= 15) {
-            System.out.println("Boa você tirou " + dado20.getResultado());
+            System.out.println("Boa! Você tirou " + dado20.getResultado());
             System.out.println("Rolando 1D6..");
             dado6.rolar();
-            System.out.println("Você da uma defesa de " + dado6.getResultado());
+            System.out.println("Defesa do Combatente! Valor defendido: " + dado6.getResultado());
             setResultadoDefesa(dado6.getResultado());
-            setSucessoNoDado(false);
+            setSucessoNoDado(true);
         } else {
-            System.out.println("Puts, você tirou " + dado20.getResultado() + " sua ação não deu certo.");
+            System.out.println("Puts, você tirou " + dado20.getResultado() + ". A defesa falhou!");
             setSucessoNoDado(false);
         }
     }
