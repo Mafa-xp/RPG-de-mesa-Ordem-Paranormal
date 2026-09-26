@@ -24,18 +24,18 @@ public class Inimigo implements Acao {
     void definirStatus() {
         switch (nivel) {
             case FACIL:
-                vidaInimigo = 30;
-                vidaMaxInimigo = 30;
+                vidaInimigo = 20;
+                vidaMaxInimigo = 20;
                 forca = 2;
                 break;
             case MEDIO:
-                vidaInimigo = 35;
-                vidaMaxInimigo = 35;
+                vidaInimigo = 25;
+                vidaMaxInimigo = 25;
                 forca = 3;
                 break;
             case BOSS:
-                vidaInimigo = 40;
-                vidaMaxInimigo = 40;
+                vidaInimigo = 30;
+                vidaMaxInimigo = 30;
                 forca = 5;
                 break;
         }

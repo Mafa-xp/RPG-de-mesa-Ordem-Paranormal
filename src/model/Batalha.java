@@ -22,8 +22,12 @@ public class Batalha {
     public void iniciar() {
         while(this.player.estaVivo() && this.inimigo.estaVivo()) {
             // Diminui a recarga a cada rodada
-            if (contagemEspecialPlayer > 0) contagemEspecialPlayer--;
-            if (contagemEspecialInimigo > 0) contagemEspecialInimigo--;
+            if (contagemEspecialPlayer > 0){
+                contagemEspecialPlayer--;
+            }
+            if (contagemEspecialInimigo > 0){
+                contagemEspecialInimigo--;
+            }
 
             turnoJogador();
             if (!inimigo.estaVivo()) {
@@ -91,7 +95,7 @@ public class Batalha {
         System.out.println("----VOCÊ USOU SEU ATAQUE ESPECIAL!----");
         Dado d6 = new Dado(6);
         d6.rolar();
-        int danoEspecial = d6.getResultado() + (player.getForca() * 2) + 8; // Dano extra bem mais forte
+        int danoEspecial = d6.getResultado() + player.getForca() + 8; // Dano extra bem mais forte
         System.out.println("Ataque Super causou " + danoEspecial + " de dano!");
         aplicarDanoNoInimigo(danoEspecial);
     }
@@ -123,7 +127,7 @@ public class Batalha {
                 player.setResultadoDefesa(0);
             }
             player.receberDano(danoSuper);
-            contagemEspecialInimigo = 5; // Recarga de 5 turnos para o inimigo
+            contagemEspecialInimigo = 4; // Recarga de 4 turnos para o inimigo
             return;
         }
 
