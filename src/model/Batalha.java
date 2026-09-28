@@ -10,6 +10,9 @@ public class Batalha {
     private Personagem player;
     private Inimigo inimigo;
 
+    private static final Integer BONUS_SUPER_ATAQUE = 10;
+    private static final Integer TURNOS_CARREGANDO = 5;
+
     // Contadores para controlar a recarga dos Ataques Especiais
     private int contagemEspecialPlayer = 0;
     private int contagemEspecialInimigo = 0;
@@ -78,7 +81,7 @@ public class Batalha {
             case 4:
                 if (contagemEspecialPlayer == 0) {
                     executarAtaqueEspecialPlayer();
-                    contagemEspecialPlayer = 3; // Define 3 turnos de recarga
+                    contagemEspecialPlayer = TURNOS_CARREGANDO; // Define turnos de recarga
                 } else {
                     System.out.println("O Especial ainda não está pronto! Você perdeu a vez!");
                 }
@@ -95,7 +98,7 @@ public class Batalha {
         System.out.println("----VOCÊ USOU SEU ATAQUE ESPECIAL!----");
         Dado d6 = new Dado(6);
         d6.rolar();
-        int danoEspecial = d6.getResultado() + player.getForca() + 8; // Dano extra bem mais forte
+        int danoEspecial = d6.getResultado() + player.getForca() + BONUS_SUPER_ATAQUE; // Dano extra bem mais forte
         System.out.println("Ataque Super causou " + danoEspecial + " de dano!");
         aplicarDanoNoInimigo(danoEspecial);
     }
@@ -123,7 +126,10 @@ public class Batalha {
             System.out.println("O inimigo te acertou um golpe devastador de dano!");
 
             if (player.getResultadoDefesa() > 0) {
-                danoSuper = Math.max(0, danoSuper - player.getResultadoDefesa());
+                danoSuper = danoSuper - player.getResultadoDefesa();
+                if (danoSuper < 0) {
+                    danoSuper = 0;
+                }
                 player.setResultadoDefesa(0);
             }
             player.receberDano(danoSuper);
@@ -140,7 +146,10 @@ public class Batalha {
                 if (inimigo.isSucessoNoDado()) {
                     int dano = inimigo.getResultadoAtaque();
                     if (player.getResultadoDefesa() > 0) {
-                        dano = Math.max(0, dano - player.getResultadoDefesa());
+                        dano = dano - player.getResultadoDefesa();
+                        if (dano < 0) {
+                            dano = 0;
+                        }
                         player.setResultadoDefesa(0);
                     }
                     player.receberDano(dano);
